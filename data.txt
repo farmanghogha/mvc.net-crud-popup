@@ -1,0 +1,86 @@
+@model ExamReTestPractical.Models.ViewModel.EmployeeVM
+
+<form method="post">
+    <input asp-for="emp.EmpId" hidden />
+  
+    <div class="row ">
+        <div class="col-10">
+            <div class="border p-3 mt-4 row">
+                <div class="col-12 pb-2">
+                    <h2 class="text-primary"> @(Model.emp.EmpId != 0 ? "Update" : "Create") Employee</h2>
+                    <hr />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="emp.Name"></label>
+                    <input asp-for="emp.Name" class="form-control" />
+                    <span asp-validation-for="emp.Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="emp.Salary"></label>
+                    <input asp-for="emp.Salary" class="form-control" />
+                    <span asp-validation-for="emp.Salary" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="emp.Description"></label>
+                    <textarea asp-for="emp.Description" class="form-control"></textarea>
+                  
+                  </div> 
+                @if (Model.emp.EmpId == null)
+                {
+                   <div class="mb-3">
+                   @foreach (var x in Model.roleList)  
+                      {
+
+                        <input type="checkbox"  value="@x.Text" class="form-check-input">
+                        <label class="form-check-label">@x.Text </label><br />
+
+                        
+                    }
+                  </div> 
+                }
+                
+
+
+                <input asp-for="emp.Role" id="roledata" class="form-control" hidden/>
+
+              
+                <div class="col-12">
+                    @if (Model.emp.EmpId != 0)
+                    {
+                        <button type="submit" class="btn btn-primary" style="width:150px" asp-controller="Employee" asp-action="PutData> Update</button>
+                    }
+                    else
+                    {
+                        <button type="submit"  class="btn btn-primary" onclick="updatemark()" asp-controller="Employee" asp-action="PutData" style="width:150px"> Create</button>
+                    }
+                    &nbsp;
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-secondary" style="width:150px">Back to List</a>
+                </div>
+
+            </div>
+        </div>
+       
+    </div>
+
+
+
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptspartial"></partial>
+    }
+    <script>
+        function updatemark(arg) {
+            var abc = ""
+           
+            $('input[type=checkbox]').each(function () {
+                if (this.checked) {
+                    abc = abc + $(this).val() + ","
+                    
+                    $('#roledata').val(abc);
+                }
+            });
+
+        }
+    </script>
+}
